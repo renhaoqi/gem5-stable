@@ -1,0 +1,1 @@
+python scons.py build/ARM/m5.opt
