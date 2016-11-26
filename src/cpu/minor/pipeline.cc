@@ -127,15 +127,15 @@ Pipeline::evaluate()
      *  later stages to earlier ones in the same cycle */
     execute.evaluate();
     decode.evaluate();
+    fetch1.evaluate();  // merging fi with f2, so change the order of these two pipes, putting the buffer between them.
+    f1ToF2.evaluate();
     fetch2.evaluate();
-    fetch1.evaluate();
+    f2ToF1.evaluate();
 
     if (DTRACE(MinorTrace))
         minorTrace();
 
     /* Update the time buffers after the stages */
-    f1ToF2.evaluate();
-    f2ToF1.evaluate();
     f2ToD.evaluate();
     dToE.evaluate();
     eToF1.evaluate();
