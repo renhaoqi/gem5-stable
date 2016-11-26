@@ -1,0 +1,1 @@
+build/ARM/gem5.opt configs/example/se.py --caches --l1d_size=32kB --cpu-type minor -c tests/test-progs/hello/bin/arm/linux/hello

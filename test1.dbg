@@ -1,0 +1,1 @@
+build/ARM/gem5.opt --debug-flag=Minor,Cache,TLB,Fetch --debug-file=minor.out configs/example/se.py --caches --l1d_size=32kB --cpu-type minor -c tests/test-progs/hello/bin/arm/linux/hello
