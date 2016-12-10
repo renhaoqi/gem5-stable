@@ -192,7 +192,9 @@ Fetch2::predictBranch(MinorDynInstPtr inst, BranchData &branch)
         inst->triedToPredict = true;
 
         DPRINTF(Branch, "Trying to predict for inst: %s\n", *inst);
-
+        
+        //-- predictable? 
+    
         if (branchPredictor.predict(inst->staticInst,
             inst->id.fetchSeqNum, inst_pc,
             inst->id.threadId))
@@ -497,7 +499,7 @@ Fetch2::evaluate()
         /* The rest of the output (if any) should already have been packed
          *  with bubble instructions by insts_out's initialisation */
     }
-
+    
     /** Reserve a slot in the next stage and output data */
     *predictionOut.inputWire = prediction;
 
