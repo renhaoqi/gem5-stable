@@ -64,9 +64,12 @@ class Execute : public Named
   protected:
     /** Input port carrying instructions from Decode */
     Latch<ForwardInstData>::Output inp;
+    Latch<BranchData>::Output inp0;		//-- eToe2
 
     /** Input port carrying stream changes to Fetch1 */
-    Latch<BranchData>::Input out;
+    Latch<BranchData>::Input out0;		//-- eToe2
+    Latch<BranchData>::Input out;		//-- eToF1
+    Latch<BranchData>::Input out2;		//-- dToF1
 
     /** Pointer back to the containing CPU */
     MinorCPU &cpu;

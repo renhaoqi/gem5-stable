@@ -55,12 +55,14 @@ Fetch1::Fetch1(const std::string &name_,
     MinorCPU &cpu_,
     MinorCPUParams &params,
     Latch<BranchData>::Output inp_,
+    Latch<BranchData>::Output inp2_,
     Latch<ForwardLineData>::Input out_,
     Latch<BranchData>::Output prediction_,
     Reservable &next_stage_input_buffer) :
     Named(name_),
     cpu(cpu_),
     inp(inp_),
+    inp2(inp2_),
     out(out_),
     prediction(prediction_),
     nextStageReserve(next_stage_input_buffer),
@@ -527,6 +529,7 @@ void
 Fetch1::evaluate()
 {
     const BranchData &execute_branch = *inp.outputWire;
+    const BranchData &execute_branch2 = *inp2.outputWire;
     const BranchData &fetch2_branch = *prediction.outputWire;
     ForwardLineData &line_out = *out.inputWire;
 

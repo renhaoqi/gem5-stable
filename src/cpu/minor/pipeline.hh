@@ -80,7 +80,9 @@ class Pipeline : public Ticked
     Latch<BranchData> f2ToF1;
     Latch<ForwardInstData> f2ToD;
     Latch<ForwardInstData> dToE;
-    Latch<BranchData> eToF1;
+    Latch<BranchData> eToE2;
+    Latch<BranchData> e2ToF1;
+    Latch<BranchData> dToF1;
 
     Execute execute;
     Decode decode;

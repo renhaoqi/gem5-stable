@@ -70,6 +70,7 @@ class Fetch2 : public Named
     /** Input port carrying branches from Execute.  This is a snoop of the
      *  data provided to F1. */
     Latch<BranchData>::Output branchInp;
+    Latch<BranchData>::Output branchInp2;
 
     /** Output port carrying predictions back to Fetch1 */
     Latch<BranchData>::Input predictionOut;

@@ -56,6 +56,7 @@ Fetch2::Fetch2(const std::string &name,
     MinorCPUParams &params,
     Latch<ForwardLineData>::Output inp_,
     Latch<BranchData>::Output branchInp_,
+    Latch<BranchData>::Output branchInp2_,
     Latch<BranchData>::Input predictionOut_,
     Latch<ForwardInstData>::Input out_,
     Reservable &next_stage_input_buffer) :
@@ -63,6 +64,7 @@ Fetch2::Fetch2(const std::string &name,
     cpu(cpu_),
     inp(inp_),
     branchInp(branchInp_),
+    branchInp2(branchInp2_),
     predictionOut(predictionOut_),
     out(out_),
     nextStageReserve(next_stage_input_buffer),
@@ -235,6 +237,7 @@ Fetch2::evaluate()
     ForwardInstData &insts_out = *out.inputWire;
     BranchData prediction;
     BranchData &branch_inp = *branchInp.outputWire;
+    BranchData &branch_inp2 = *branchInp2.outputWire;
 
     assert(insts_out.isBubble());
 

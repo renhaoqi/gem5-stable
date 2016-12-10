@@ -64,17 +64,21 @@ Pipeline::Pipeline(MinorCPU &cpu_, MinorCPUParams &params) :
         params.fetch2ToDecodeForwardDelay),
     dToE(cpu.name() + ".dToE", "insts",
         params.decodeToExecuteForwardDelay),
-    eToF1(cpu.name() + ".eToF1", "branch",
+    eToE2(cpu.name() + ".eToE2", "branch",
+        params.executeBranchDelay),
+    e2ToF1(cpu.name() + ".e2ToF1", "branch",
+        params.executeBranchDelay),
+    dToF1(cpu.name() + ".dToF1", "branch",
         params.executeBranchDelay),
     execute(cpu.name() + ".execute", cpu, params,
-        dToE.output(), eToF1.input()),
+        dToE.output(), eToE2.output(), eToE2.input(), e2ToF1.input(), dToF1.input()),
     decode(cpu.name() + ".decode", cpu, params,
         f2ToD.output(), dToE.input(), execute.inputBuffer),
     fetch2(cpu.name() + ".fetch2", cpu, params,
-        f1ToF2.output(), eToF1.output(), f2ToF1.input(), f2ToD.input(),
+        f1ToF2.output(), e2ToF1.output(), dToF1.output(), f2ToF1.input(), f2ToD.input(),
         decode.inputBuffer),
     fetch1(cpu.name() + ".fetch1", cpu, params,
-        eToF1.output(), f1ToF2.input(), f2ToF1.output(), fetch2.inputBuffer),
+        e2ToF1.output(), dToF1.output(), f1ToF2.input(), f2ToF1.output(), fetch2.inputBuffer),
     activityRecorder(cpu.name() + ".activity", Num_StageId,
         /* The max depth of inter-stage FIFOs */
         std::max(params.fetch1ToFetch2ForwardDelay,
@@ -115,7 +119,9 @@ Pipeline::minorTrace() const
     decode.minorTrace();
     dToE.minorTrace();
     execute.minorTrace();
-    eToF1.minorTrace();
+    eToE2.minorTrace();
+    e2ToF1.minorTrace();
+    dToF1.minorTrace();
     activityRecorder.minorTrace();
 }
 
@@ -140,8 +146,10 @@ Pipeline::evaluate()
     //--fetch2.evaluate();
     //--fetch1.evaluate();
     
+    decode.evaluate();  //-- merging d with e, so change the order of these two pipes, putting the buffer between them.
+    dToE.evaluate();
     execute.evaluate();
-    decode.evaluate();
+    dToF1.evaluate();
     fetch1.evaluate();  //-- merging fi with f2, so change the order of these two pipes, putting the buffer between them.
     f1ToF2.evaluate();
     fetch2.evaluate();
@@ -154,8 +162,9 @@ Pipeline::evaluate()
     //f1ToF2.evaluate();	//-- move to above
     //f2ToF1.evaluate();	//-- move to above
     f2ToD.evaluate();
-    dToE.evaluate();
-    eToF1.evaluate();
+    //dToE.evaluate();		//-- move to above
+    eToE2.evaluate();
+    e2ToF1.evaluate();
 
     /* The activity recorder must be be called after all the stages and
      *  before the idler (which acts on the advice of the activity recorder */

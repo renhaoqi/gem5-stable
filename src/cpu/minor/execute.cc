@@ -62,10 +62,14 @@ Execute::Execute(const std::string &name_,
     MinorCPU &cpu_,
     MinorCPUParams &params,
     Latch<ForwardInstData>::Output inp_,
-    Latch<BranchData>::Input out_) :
+    Latch<BranchData>::Output inp0_,
+    Latch<BranchData>::Input out0_,
+    Latch<BranchData>::Input out_,
+    Latch<BranchData>::Input out2_) :
     Named(name_),
     inp(inp_),
     out(out_),
+    out2(out2_),
     cpu(cpu_),
     issueLimit(params.executeIssueLimit),
     memoryIssueLimit(params.executeMemoryIssueLimit),
@@ -1592,8 +1596,10 @@ Execute::wakeupFetch(BranchData::Reason reason)
         DPRINTF(MinorInterrupt, "Already branching, no need for wakeup\n");
     }
 
+    *out0.inputWire = *inp0.outputWire;		//-- just delay for a cycle 
     *out.inputWire = branch;
-
+    *out2.inputWire = branch;
+    
     /* Make sure we get ticked */
     cpu.wakeupOnEvent(Pipeline::ExecuteStageId);
 }
