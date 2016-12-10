@@ -68,6 +68,8 @@ Execute::Execute(const std::string &name_,
     Latch<BranchData>::Input out2_) :
     Named(name_),
     inp(inp_),
+    inp0(inp0_),
+    out0(out0_),
     out(out_),
     out2(out2_),
     cpu(cpu_),
