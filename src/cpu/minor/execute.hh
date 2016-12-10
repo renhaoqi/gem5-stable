@@ -279,7 +279,10 @@ class Execute : public Named
         MinorCPU &cpu_,
         MinorCPUParams &params,
         Latch<ForwardInstData>::Output inp_,
-        Latch<BranchData>::Input out_);
+        Latch<BranchData>::Output inp0_,
+        Latch<BranchData>::Input out0_,
+        Latch<BranchData>::Input out_,
+        Latch<BranchData>::Input out2_);
 
     ~Execute();
 

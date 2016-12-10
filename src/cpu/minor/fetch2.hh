@@ -164,6 +164,7 @@ class Fetch2 : public Named
         MinorCPUParams &params,
         Latch<ForwardLineData>::Output inp_,
         Latch<BranchData>::Output branchInp_,
+        Latch<BranchData>::Output branchInp2_,
         Latch<BranchData>::Input predictionOut_,
         Latch<ForwardInstData>::Input out_,
         Reservable &next_stage_input_buffer);

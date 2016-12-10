@@ -353,6 +353,7 @@ class Fetch1 : public Named
         MinorCPU &cpu_,
         MinorCPUParams &params,
         Latch<BranchData>::Output inp_,
+        Latch<BranchData>::Output inp2_,
         Latch<ForwardLineData>::Input out_,
         Latch<BranchData>::Output prediction_,
         Reservable &next_stage_input_buffer);
