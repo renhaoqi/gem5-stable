@@ -62,6 +62,8 @@ Pipeline::Pipeline(MinorCPU &cpu_, MinorCPUParams &params) :
         params.fetch1ToFetch2BackwardDelay, true),
     f2ToD(cpu.name() + ".f2ToD", "insts",
         params.fetch2ToDecodeForwardDelay),
+    f2ToD2(cpu.name() + ".f2ToD2", "insts",
+        params.fetch2ToDecodeForwardDelay),
     dToE(cpu.name() + ".dToE", "insts",
         params.decodeToExecuteForwardDelay),
     eToF1(cpu.name() + ".eToF1", "branch",
@@ -71,9 +73,9 @@ Pipeline::Pipeline(MinorCPU &cpu_, MinorCPUParams &params) :
     execute(cpu.name() + ".execute", cpu, params,
         dToE.output(), eToF1.input(), dToF.input()),
     decode(cpu.name() + ".decode", cpu, params,
-        f2ToD.output(), dToE.input(), execute.inputBuffer),
+        f2ToD.output(), f2ToD2.output(), dToE.input(), execute.inputBuffer),
     fetch2(cpu.name() + ".fetch2", cpu, params,
-        f1ToF2.output(), eToF1.output(), dToF.output(), f2ToF1.input(), f2ToD.input(),
+        f1ToF2.output(), eToF1.output(), dToF.output(), f2ToF1.input(), f2ToD.input(), f2ToD2.input(),
         decode.inputBuffer),
     fetch1(cpu.name() + ".fetch1", cpu, params,
         eToF1.output(), dToF.output(), f1ToF2.input(), f2ToF1.output(), fetch2.inputBuffer),
@@ -114,6 +116,7 @@ Pipeline::minorTrace() const
     f2ToF1.minorTrace();
     fetch2.minorTrace();
     f2ToD.minorTrace();
+    f2ToD2.minorTrace();
     decode.minorTrace();
     dToE.minorTrace();
     execute.minorTrace();
@@ -159,6 +162,7 @@ Pipeline::evaluate()
     //f1ToF2.evaluate();	//-- move to above
     //f2ToF1.evaluate();	//-- move to above
     f2ToD.evaluate();
+    f2ToD2.evaluate();
     //dToE.evaluate();		//-- move to above
     eToF1.evaluate();
 

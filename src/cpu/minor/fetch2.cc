@@ -59,6 +59,7 @@ Fetch2::Fetch2(const std::string &name,
     Latch<BranchData>::Output branchInp2_,
     Latch<BranchData>::Input predictionOut_,
     Latch<ForwardInstData>::Input out_,
+    Latch<ForwardInstData>::Input out2_,
     Reservable &next_stage_input_buffer) :
     Named(name),
     cpu(cpu_),
@@ -67,6 +68,7 @@ Fetch2::Fetch2(const std::string &name,
     branchInp2(branchInp2_),
     predictionOut(predictionOut_),
     out(out_),
+    out2(out2_),
     nextStageReserve(next_stage_input_buffer),
     outputWidth(params.decodeInputWidth),
     processMoreThanOneInput(params.fetch2CycleInput),
@@ -235,11 +237,14 @@ Fetch2::evaluate()
 {
     inputBuffer.setTail(*inp.outputWire);
     ForwardInstData &insts_out = *out.inputWire;
+    ForwardInstData &insts_out2 = *out2.inputWire;
     BranchData prediction;
     BranchData &branch_inp = *branchInp.outputWire;
     BranchData &branch_inp2 = *branchInp2.outputWire;
 
     assert(insts_out.isBubble());
+    
+    pred = prediction;
 
     blocked = false;
 
@@ -333,6 +338,7 @@ Fetch2::evaluate()
             /* The generated instruction.  Leave as NULL if no instruction
              *  is to be packed into the output */
             MinorDynInstPtr dyn_inst = NULL;
+            MinorDynInstPtr dyn_inst2 = NULL;
 
             if (discard_line) {
                 /* Rest of line was from an older prediction in the same
@@ -433,6 +439,8 @@ Fetch2::evaluate()
 
                     /* Predict any branches and issue a branch if
                      *  necessary */
+                    pred = prediction;
+                    dyn_inst2 = dyn_inst£»
                     predictBranch(dyn_inst, prediction);
                 } else {
                     DPRINTF(Fetch, "Inst not ready yet\n");
@@ -455,10 +463,13 @@ Fetch2::evaluate()
                 fetchSeqNum++;
 
                 /* Correctly size the output before writing */
-                if (output_index == 0)
+                if (output_index == 0){
                     insts_out.resize(outputWidth);
+                    insts_out2.resize(outputWidth);
+                    }
                 /* Pack the generated dynamic instruction into the output */
                 insts_out.insts[output_index] = dyn_inst;
+                insts_out2.insts[output_index] = dyn_inst2;
                 output_index++;
 
                 /* Output MinorTrace instruction info for

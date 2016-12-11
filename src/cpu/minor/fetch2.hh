@@ -77,6 +77,7 @@ class Fetch2 : public Named
 
     /** Output port carrying instructions into Decode */
     Latch<ForwardInstData>::Input out;
+    Latch<ForwardInstData>::Input out2;
 
     /** Interface to reserve space in the next stage */
     Reservable &nextStageReserve;
@@ -136,6 +137,10 @@ class Fetch2 : public Named
 
     /** Blocked indication for report */
     bool blocked;
+    
+    
+    BranchData pred;
+
 
   protected:
     /** Get a piece of data to work on from the inputBuffer, or 0 if there
@@ -167,6 +172,7 @@ class Fetch2 : public Named
         Latch<BranchData>::Output branchInp2_,
         Latch<BranchData>::Input predictionOut_,
         Latch<ForwardInstData>::Input out_,
+        Latch<ForwardInstData>::Input out2_,
         Reservable &next_stage_input_buffer);
 
   public:
