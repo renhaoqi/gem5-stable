@@ -573,8 +573,8 @@ Fetch1::evaluate()
 
         /* The streamSeqNum tagging in request/response ->req should handle
          *  discarding those requests when we get to them. */
-//    } else if (state != FetchHalted && fetch2_branch.isStreamChange()) {
-    } else if (state != FetchHalted && fetch2_branch.isStreamChange() && execute_branch2.isStreamChange()) {
+    } else if (state != FetchHalted && fetch2_branch.isStreamChange()) {
+//    } else if (state != FetchHalted && fetch2_branch.isStreamChange() && execute_branch2.isStreamChange()) {
         /* Handle branch predictions by changing the instruction source
          * if we're still processing the same stream (as set by streamSeqNum)
          * as the one of the prediction.
