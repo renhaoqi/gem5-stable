@@ -247,7 +247,7 @@ Fetch2::evaluate()
      *  structures */
     updateBranchPrediction(branch_inp);
 
-    if (branch_inp2.isStreamChange()) {
+    if (branch_inp2.isStreamChange()){
     	DPRINTF(Fetch, "xxx2\n");
     }
     

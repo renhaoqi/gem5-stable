@@ -544,7 +544,7 @@ Fetch1::evaluate()
 
     blocked = !nextStageReserve.canReserve();
 
-    if (execute_branch2.isStreamChange(){
+    if (execute_branch2.isStreamChange()){
     	DPRINTF(Fetch, "xxx1\n");
     }
     
