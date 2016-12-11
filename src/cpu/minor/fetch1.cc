@@ -531,6 +531,13 @@ Fetch1::evaluate()
     ForwardLineData &line_out = *out.inputWire;
 
     assert(line_out.isBubble());
+    
+    //-- assuming both insts are fetched, and then selected by decision, and no 
+    //-- waiting for the cache lantency of the discard one.
+    //-- the above scheme is just the same as select the address by decision,
+    //-- and then fetch it.
+    //-- what's more, this pipe (F1 and F2) will be removed in TT structure,
+    //-- so 'select after fetch' and 'fetch after select' make no different.
 
     blocked = !nextStageReserve.canReserve();
 

@@ -125,19 +125,37 @@ Pipeline::evaluate()
     /* Note that it's important to evaluate the stages in order to allow
      *  'immediate', 0-time-offset TimeBuffer activity to be visible from
      *  later stages to earlier ones in the same cycle */
+     
+    //-- 3-stage pipeline, I D E
+    //-- I-pipe: fetch the inst, if the branch's target address is predictable 
+    //--	(can be generated in D-pipe) and the decision can be made in
+    //--	 D-pipe, fetches both insts, and using the bypassed decision
+    //--	to choose one of the two insts.
+    //-- D-pipe: decode, branch decision 
+    //-- E-pipe: generate target for non-predictable branch.
+
+    //-- the original code is
+    //--execute.evaluate();
+    //--decode.evaluate();
+    //--fetch2.evaluate();
+    //--fetch1.evaluate();
+    
+    decode.evaluate();	//-- merging
+    dToE.evaluate();
     execute.evaluate();
-    decode.evaluate();
+    fetch1.evaluate();  //-- merging fi with f2, so change the order of these two pipes, putting the buffer between them.
+    f1ToF2.evaluate();
     fetch2.evaluate();
-    fetch1.evaluate();
+    f2ToF1.evaluate();
 
     if (DTRACE(MinorTrace))
         minorTrace();
 
     /* Update the time buffers after the stages */
-    f1ToF2.evaluate();
-    f2ToF1.evaluate();
+    //f1ToF2.evaluate();	//-- move to above
+    //f2ToF1.evaluate();	//-- move to above
     f2ToD.evaluate();
-    dToE.evaluate();
+    //dToE.evaluate();		//-- move to above
     eToF1.evaluate();
 
     /* The activity recorder must be be called after all the stages and
