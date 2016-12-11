@@ -140,8 +140,9 @@ Pipeline::evaluate()
     //--fetch2.evaluate();
     //--fetch1.evaluate();
     
+    decode.evaluate();	//-- merging
+    dToE.evaluate();
     execute.evaluate();
-    decode.evaluate();
     fetch1.evaluate();  //-- merging fi with f2, so change the order of these two pipes, putting the buffer between them.
     f1ToF2.evaluate();
     fetch2.evaluate();
@@ -154,7 +155,7 @@ Pipeline::evaluate()
     //f1ToF2.evaluate();	//-- move to above
     //f2ToF1.evaluate();	//-- move to above
     f2ToD.evaluate();
-    dToE.evaluate();
+    //dToE.evaluate();		//-- move to above
     eToF1.evaluate();
 
     /* The activity recorder must be be called after all the stages and
