@@ -199,7 +199,7 @@ Fetch2::predictBranch(MinorDynInstPtr inst, BranchData &branch)
     
         if (branchPredictor.predict(inst->staticInst,
             inst->id.fetchSeqNum, inst_pc,
-            inst->id.threadId))
+            inst->id.threadId) )
         {
             inst->predictedTaken = true;
             inst->predictedTarget = inst_pc;
