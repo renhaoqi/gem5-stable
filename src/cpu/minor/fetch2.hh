@@ -156,7 +156,7 @@ class Fetch2 : public Named
     /** Predicts branches for the given instruction.  Updates the
      *  instruction's predicted... fields and also the branch which
      *  carries the prediction to Fetch1 */
-    void predictBranch(MinorDynInstPtr inst, BranchData &branch);
+    void predictBranch(MinorDynInstPtr inst, BranchData &branch_inp2, BranchData &branch);
 
   public:
     Fetch2(const std::string &name,

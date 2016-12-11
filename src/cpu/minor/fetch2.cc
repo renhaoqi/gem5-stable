@@ -180,7 +180,7 @@ Fetch2::updateBranchPrediction(const BranchData &branch)
 }
 
 void
-Fetch2::predictBranch(MinorDynInstPtr inst, BranchData &branch)
+Fetch2::predictBranch(MinorDynInstPtr inst, BranchData &branch_inp2, BranchData &branch)
 {
     TheISA::PCState inst_pc = inst->pc;
 
@@ -199,7 +199,7 @@ Fetch2::predictBranch(MinorDynInstPtr inst, BranchData &branch)
     
         if (branchPredictor.predict(inst->staticInst,
             inst->id.fetchSeqNum, inst_pc,
-            inst->id.threadId))
+            inst->id.threadId) && branch_inp2.isStreamChange())
         {
             inst->predictedTaken = true;
             inst->predictedTarget = inst_pc;
@@ -246,6 +246,10 @@ Fetch2::evaluate()
     /* React to branches from Execute to update local branch prediction
      *  structures */
     updateBranchPrediction(branch_inp);
+
+    if (branch_inp2.isStreamChange()) {
+        DPRINTF(Fetch, "xxx2\n");
+    }
 
     /* If a branch arrives, don't try and do anything about it.  Only
      *  react to your own predictions */
@@ -429,7 +433,7 @@ Fetch2::evaluate()
 
                     /* Predict any branches and issue a branch if
                      *  necessary */
-                    predictBranch(dyn_inst, prediction);
+                    predictBranch(dyn_inst, branch_inp2, prediction);
                 } else {
                     DPRINTF(Fetch, "Inst not ready yet\n");
                 }

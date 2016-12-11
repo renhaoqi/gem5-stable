@@ -544,6 +544,10 @@ Fetch1::evaluate()
 
     blocked = !nextStageReserve.canReserve();
 
+    if (execute_branch2.isStreamChange()) {
+        DPRINTF(Fetch, "xxx1\n");
+    }
+    
     /* Are we changing stream?  Look to the Execute branches first, then
      * to predicted changes of stream from Fetch2 */
     /* @todo, find better way to express ignoring branch predictions */
