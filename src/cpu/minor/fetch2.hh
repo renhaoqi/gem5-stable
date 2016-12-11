@@ -70,6 +70,7 @@ class Fetch2 : public Named
     /** Input port carrying branches from Execute.  This is a snoop of the
      *  data provided to F1. */
     Latch<BranchData>::Output branchInp;
+    Latch<BranchData>::Output branchInp2;
 
     /** Output port carrying predictions back to Fetch1 */
     Latch<BranchData>::Input predictionOut;
@@ -163,6 +164,7 @@ class Fetch2 : public Named
         MinorCPUParams &params,
         Latch<ForwardLineData>::Output inp_,
         Latch<BranchData>::Output branchInp_,
+        Latch<BranchData>::Output branchInp2_,
         Latch<BranchData>::Input predictionOut_,
         Latch<ForwardInstData>::Input out_,
         Reservable &next_stage_input_buffer);

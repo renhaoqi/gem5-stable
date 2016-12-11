@@ -62,10 +62,12 @@ Execute::Execute(const std::string &name_,
     MinorCPU &cpu_,
     MinorCPUParams &params,
     Latch<ForwardInstData>::Output inp_,
-    Latch<BranchData>::Input out_) :
+    Latch<BranchData>::Input out_,
+    Latch<BranchData>::Input out2_) :
     Named(name_),
     inp(inp_),
     out(out_),
+    out2(out2_),
     cpu(cpu_),
     issueLimit(params.executeIssueLimit),
     memoryIssueLimit(params.executeMemoryIssueLimit),

@@ -67,6 +67,7 @@ class Execute : public Named
 
     /** Input port carrying stream changes to Fetch1 */
     Latch<BranchData>::Input out;
+    Latch<BranchData>::Input out2;
 
     /** Pointer back to the containing CPU */
     MinorCPU &cpu;
@@ -276,7 +277,8 @@ class Execute : public Named
         MinorCPU &cpu_,
         MinorCPUParams &params,
         Latch<ForwardInstData>::Output inp_,
-        Latch<BranchData>::Input out_);
+        Latch<BranchData>::Input out_,
+        Latch<BranchData>::Input out2_);
 
     ~Execute();
 

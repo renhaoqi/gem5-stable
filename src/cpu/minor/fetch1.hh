@@ -191,6 +191,7 @@ class Fetch1 : public Named
 
     /** Input port carrying branch requests from Execute */
     Latch<BranchData>::Output inp;
+    Latch<BranchData>::Output inp2;
     /** Output port carrying read lines to Fetch2 */
     Latch<ForwardLineData>::Input out;
     /** Input port carrying branch predictions from Fetch2 */
@@ -352,6 +353,7 @@ class Fetch1 : public Named
         MinorCPU &cpu_,
         MinorCPUParams &params,
         Latch<BranchData>::Output inp_,
+        Latch<BranchData>::Output inp2_,
         Latch<ForwardLineData>::Input out_,
         Latch<BranchData>::Output prediction_,
         Reservable &next_stage_input_buffer);

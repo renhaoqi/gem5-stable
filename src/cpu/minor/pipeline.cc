@@ -66,15 +66,17 @@ Pipeline::Pipeline(MinorCPU &cpu_, MinorCPUParams &params) :
         params.decodeToExecuteForwardDelay),
     eToF1(cpu.name() + ".eToF1", "branch",
         params.executeBranchDelay),
+    dToF(cpu.name() + ".dToF", "branch",
+        params.executeBranchDelay),
     execute(cpu.name() + ".execute", cpu, params,
-        dToE.output(), eToF1.input()),
+        dToE.output(), eToF1.input(), dToF.input()),
     decode(cpu.name() + ".decode", cpu, params,
         f2ToD.output(), dToE.input(), execute.inputBuffer),
     fetch2(cpu.name() + ".fetch2", cpu, params,
-        f1ToF2.output(), eToF1.output(), f2ToF1.input(), f2ToD.input(),
+        f1ToF2.output(), eToF1.output(), dToF.output(), f2ToF1.input(), f2ToD.input(),
         decode.inputBuffer),
     fetch1(cpu.name() + ".fetch1", cpu, params,
-        eToF1.output(), f1ToF2.input(), f2ToF1.output(), fetch2.inputBuffer),
+        eToF1.output(), dToF.output(), f1ToF2.input(), f2ToF1.output(), fetch2.inputBuffer),
     activityRecorder(cpu.name() + ".activity", Num_StageId,
         /* The max depth of inter-stage FIFOs */
         std::max(params.fetch1ToFetch2ForwardDelay,
@@ -116,6 +118,7 @@ Pipeline::minorTrace() const
     dToE.minorTrace();
     execute.minorTrace();
     eToF1.minorTrace();
+    dToF.minorTrace();
     activityRecorder.minorTrace();
 }
 
@@ -143,6 +146,7 @@ Pipeline::evaluate()
     decode.evaluate();	//-- merging
     dToE.evaluate();
     execute.evaluate();
+    dToF.evaluate();	//--
     fetch1.evaluate();  //-- merging fi with f2, so change the order of these two pipes, putting the buffer between them.
     f1ToF2.evaluate();
     fetch2.evaluate();
